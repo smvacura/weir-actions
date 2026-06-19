@@ -15,7 +15,7 @@ outputs:
 
 runs:
   using: docker
-  image: ghcr.io/smvacura/weir:latest
+  image: docker://ghcr.io/smvacura/weir:latest
   args:
     - ${{ inputs.before }}
     - ${{ inputs.after }}
