@@ -1,0 +1,22 @@
+name: weir-diff
+description: Runs a diff between two Azure TF plans
+
+inputs:
+  before: 
+    required: true
+    description: The previously applied TFPlan
+  after:
+    required: true
+    description: The plan that will be applied
+
+outputs:
+  diff:
+    description: The diff between the two plans
+
+runs:
+  using: docker
+  image: ghcr.io/smvacura/weir:latest
+  args:
+    - ${{ inputs.before }}
+    - ${{ inputs.after }}
+    - --show-if-new
