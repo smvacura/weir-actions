@@ -23,7 +23,7 @@ runs:
         output=$(docker run --rm \
           -v "$GITHUB_WORKSPACE/${{ inputs.before }}:/before.json" \
           -v "$GITHUB_WORKSPACE/${{ inputs.after }}:/after.json" \
-          ghcr.io/smvacura/weir:latest diff /before.json /after.json --show-if-new 2>&1) || true
+          ghcr.io/smvacura/weir:latest diff /before.json /after.json --show-if-new) || true
         {
           echo 'diff<<EOF'
           echo "$output"
