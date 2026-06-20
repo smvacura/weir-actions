@@ -17,6 +17,7 @@ runs:
   using: docker
   image: docker://ghcr.io/smvacura/weir:latest
   args:
+    - diff
     - ${{ inputs.before }}
     - ${{ inputs.after }}
     - --show-if-new
