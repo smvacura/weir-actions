@@ -2,7 +2,7 @@ name: weir-diff
 description: Runs a diff between two Azure TF plans
 
 inputs:
-  before: 
+  before:
     required: true
     description: The previously applied TFPlan
   after:
@@ -12,11 +12,20 @@ inputs:
 outputs:
   diff:
     description: The diff between the two plans
+    value: ${{ steps.run.outputs.diff }}
 
 runs:
-  using: docker
-  image: ghcr.io/smvacura/weir:latest
-  args:
-    - ${{ inputs.before }}
-    - ${{ inputs.after }}
-    - --show-if-new
+  using: composite
+  steps:
+    - id: run
+      shell: bash
+      run: |
+        output=$(docker run --rm \
+          -v "$GITHUB_WORKSPACE/${{ inputs.before }}:/before.json" \
+          -v "$GITHUB_WORKSPACE/${{ inputs.after }}:/after.json" \
+          ghcr.io/smvacura/weir:latest diff /before.json /after.json --show-if-new 2>&1) || true
+        {
+          echo 'diff<<EOF'
+          echo "$output"
+          echo 'EOF'
+        } >> "$GITHUB_OUTPUT"
